@@ -1,9 +1,9 @@
 import { Users } from "../Schema/User";
-import { Request,RequestHandler,Response } from "express";
+import { Request,RequestHandler,Response,NextFunction } from "express";
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import { Types } from "mongoose";
-import util,{promisify} from 'util'
+import { promisify } from "util";
 
 const go:string="slioierfugh fsobihw5thk wrgoijgrbtg n3lr;tijnk mwrgnlijo " //! This just for Developing put it in env
 
@@ -12,14 +12,20 @@ const Token=(id:Types.ObjectId)=>{
         expiresIn:'1d'
     })
 }
+let user:any;
+
+interface Decoded{
+    id:Types.ObjectId
+}
 
 export async function Sigup(req:Request,res:Response) {                              
     try{
-        const {Email,Name,Password}=req.body
+        const {Email,Name,Password,Role}=req.body
         const NewUser=await Users.create({
             Email:Email,
             Name:Name,
-            Password:Password
+            Password:Password,
+            Role:Role
         })
 
         res.status(200).json({
@@ -84,12 +90,25 @@ export const Check:RequestHandler=async(req,res,next)=>{
         let token;
         if(req.header('Authorization')){
             token=req.header('Authorization')
+            // console.log(token+"hi")
         }
-        if(!token) throw new Error('You are not Login')
-        console.log(token)
 
-        const decod=await jwt.verify(token,go)
-        console.log(decod)
+        if(!token) throw new Error('You are not Login')
+        // console.log(token+"go")
+
+        //* In case need to promisefi
+        const decoded:Decoded = await new Promise((resolve, reject) => {
+            jwt.verify(token, go, (err:any, decoded:any) => {
+                if (err) {
+                    reject(err);
+                } else {
+                resolve(decoded);
+                }
+            });
+        });
+        user=await Users.findById(decoded.id)
+        next()
+        // console.log(decoded.id)
     }catch(err){
         if(err instanceof Error){
             return res.status(400).json({
@@ -107,5 +126,34 @@ export const Check:RequestHandler=async(req,res,next)=>{
             status: 500,
             message: "Internal Server Error"
             })
+    }
+}
+
+export const Restrict=(...roles:string[])=>{
+    return (req:Request,res:Response,next:NextFunction)=>{
+        try{
+            // console.log(user.Role)
+            if(!roles.includes(user.Role)){
+                throw Error("You are not admin")
+            }
+            next()
+        }catch(err){
+        if(err instanceof Error){
+            return res.status(400).json({
+                status: 400,
+                message: err.message
+            })
+        }
+        else if(typeof err=="string"){
+            return res.status(400).json({
+                status: 400,
+                message: err
+            })
+        }
+        return res.status(500).json({
+            status: 500,
+            message: "Internal Server Error"
+            })
+    }
     }
 }

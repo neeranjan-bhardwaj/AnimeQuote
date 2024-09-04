@@ -19,6 +19,11 @@ const UserSchema=new Schema({
         required:true,
         select:false
     },
+    Role:{
+        type:String,
+        enum:["user","admin"],
+        // default:"user"
+    }
     //* This to varifi both password are == or ! 
     //* Not using Conform Password For now . In this API 
     // Conform:{
