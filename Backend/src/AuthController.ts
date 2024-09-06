@@ -12,7 +12,7 @@ const Token=(id:Types.ObjectId)=>{
         expiresIn:'1d'
     })
 }
-let user:any;
+let user:Document|null;
 
 interface Decoded{
     id:Types.ObjectId
@@ -157,3 +157,4 @@ export const Restrict=(...roles:string[])=>{
     }
     }
 }
+
