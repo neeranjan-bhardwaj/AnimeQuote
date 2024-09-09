@@ -12,10 +12,17 @@ const Token=(id:Types.ObjectId)=>{
         expiresIn:'1d'
     })
 }
-let user:Document|null;
+let user:UsersDocument|null;
 
 interface Decoded{
     id:Types.ObjectId
+}
+
+interface UsersDocument extends Document {
+    Email: string;
+    Name: string;
+    Password: string;
+    Role: string;
 }
 
 export async function Sigup(req:Request,res:Response) {                              
@@ -133,7 +140,7 @@ export const Restrict=(...roles:string[])=>{
     return (req:Request,res:Response,next:NextFunction)=>{
         try{
             // console.log(user.Role)
-            if(!roles.includes(user.Role)){
+            if(!user||!roles.includes(user.Role)){
                 throw Error("You are not admin")
             }
             next()
@@ -157,4 +164,54 @@ export const Restrict=(...roles:string[])=>{
     }
     }
 }
+
+export const Forgot=async(req:Request,res:Response)=>{
+    try{
+        const {email}=req.body
+        const user=await Users.findOne({email})
+        if(!user)throw Error("No user of that email")
+        
+        
+    }catch(err){
+        if(err instanceof Error){
+            return res.status(400).json({
+                status: 400,
+                message: err.message
+            })
+        }
+        else if(typeof err=="string"){
+            return res.status(400).json({
+                status: 400,
+                message: err
+            })
+        }
+        return res.status(500).json({
+            status: 500,
+            message: "Internal Server Error"
+            })
+    }
+}
+export const Reset=(req:Request,res:Response)=>{
+    try{
+        
+    }catch(err){
+        if(err instanceof Error){
+            return res.status(400).json({
+                status: 400,
+                message: err.message
+            })
+        }
+        else if(typeof err=="string"){
+            return res.status(400).json({
+                status: 400,
+                message: err
+            })
+        }
+        return res.status(500).json({
+            status: 500,
+            message: "Internal Server Error"
+            })
+    }
+}
+
 
