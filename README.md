@@ -1,26 +1,60 @@
-# Anime Quote
+# Anime Quote API
 
-A small anime quote API for learning.
+A backend REST API for managing anime quotes, built with TypeScript, Express.js, and MongoDB.
 
-## Index
+This is a personal learning project focused on backend development, API design, authentication, database integration, and CRUD operations.
+
+## Table of Contents
 
 - [About the Project](#about-the-project)
 - [Features](#features)
-- [How to Use](#how-to-use)
+- [Tech Stack](#tech-stack)
+- [Getting Started](#getting-started)
+- [Environment Variables](#environment-variables)
+- [Running the Project](#running-the-project)
+- [API Endpoints](#api-endpoints)
+- [Authentication](#authentication)
+- [Database](#database)
+- [Project Goals](#project-goals)
 
 ## About the Project
 
-Anime Quote is a backend API that returns random quotes stored in a MongoDB database. This project was created to learn how to build APIs, including authentication and CRUD operations.
+Anime Quote API is a backend application that provides functionality for working with anime quotes stored in a MongoDB database.
+
+The project was developed to explore backend development concepts and gain practical experience building APIs using TypeScript and Express.js.
+
+It includes authentication functionality, password hashing, database operations, and CRUD functionality.
+
+This project does not include a frontend. All functionality is exposed through API endpoints.
 
 ## Features
 
-- Random anime quotes
-- MongoDB data storage
-- Authentication with bcrypt password hashing
-- CRUD operations
-- TypeScript, Express.js, and MongoDB
+- **Anime Quotes:** Retrieve random anime quotes.
+- **Database Integration:** Store and manage data using MongoDB.
+- **Authentication:** Password hashing using bcrypt.
+- **CRUD Operations:** Create, read, update, and delete data.
+- **Environment Configuration:** Manage application settings through environment variables.
+- **TypeScript:** Type-safe backend development.
 
-## How to Use
+## Tech Stack
+
+| Technology | Purpose |
+|---|---|
+| TypeScript | Main programming language |
+| Express.js | Backend framework |
+| Bun / Node.js | JavaScript runtime |
+| MongoDB | Database |
+| bcrypt | Password hashing |
+
+## Getting Started
+
+### Prerequisites
+
+Make sure you have the following installed:
+
+- Git
+- Bun or Node.js with npm
+- MongoDB
 
 ### Clone the Repository
 
@@ -29,11 +63,11 @@ git clone <repository-url>
 cd AnimeQuote/Backend
 ```
 
-Replace `<repository-url>` with the repository URL, then run the setup commands from the backend directory.
+Replace `<repository-url>` with your repository URL.
 
-### Environment Setup
+### Environment Variables
 
-Create a `.env` file in the backend directory and add:
+Create a `.env` file in the backend directory:
 
 ```env
 PORT=3000
@@ -41,34 +75,89 @@ MONGO_URI=mongodb://127.0.0.1:27017/anime_quote
 JWT_SECRET=your_secret_key
 ```
 
-Make sure MongoDB is running locally on port `27017`.
+| Variable | Description |
+|---|---|
+| PORT | Port on which the API runs |
+| MONGO_URI | MongoDB connection string |
+| JWT_SECRET | Secret used for JWT authentication, if implemented |
 
-### Using Bun
+Make sure MongoDB is running before starting the application.
+
+### Install Dependencies
+
+Using Bun:
 
 ```bash
 bun install
-bun run dev
 ```
 
-This installs the dependencies and starts the development server.
-
-### Using Node.js
+Or using npm:
 
 ```bash
 npm install
+```
+
+### Run the Development Server
+
+Using Bun:
+
+```bash
+bun run dev
+```
+
+Using npm:
+
+```bash
 npm run dev
 ```
 
-This installs the dependencies and starts the development server.
+The API should be available at:
 
-### API Endpoints
+```text
+http://localhost:3000
+```
 
-When running locally, the API is available at `http://localhost:3000`:
+## API Endpoints
 
-1. `/Forgot`
-2. `/Anime`
-3. `/Login`
-4. `/Sigup`
-5. `/Reset`
+The following endpoints are available in the application:
 
-> This is only an API, with no frontend. It is a personal project created to test and demonstrate my skills.
+| Endpoint | Purpose |
+|---|---|
+| `/Anime` | Anime Quote |
+| `/Forgot` | Forgot-password functionality |
+| `/Login` | User login |
+| `/Sigup` | User registration |
+| `/Reset` | Password reset functionality |
+
+**Note:** Refer to the implementation for the exact HTTP methods, request parameters, and response formats.
+
+## Authentication
+
+The project includes authentication-related functionality.
+
+- Password hashing using bcrypt.
+- Login and registration endpoints.
+- JWT-related environment configuration.
+
+## Database
+
+MongoDB is used to store application data.
+
+The application connects to a local MongoDB instance by default. The database connection is configured through the `MONGO_URI` environment variable.
+
+## Project Goals
+
+The main purpose of this project was to gain practical experience with:
+
+- Building REST APIs using Express.js.
+- Working with TypeScript in backend applications.
+- Integrating MongoDB with a backend application.
+- Implementing authentication-related functionality.
+- Performing CRUD operations.
+- Managing application configuration through environment variables.
+
+---
+
+**Project Type:** Personal Learning Project  
+**Focus:** Backend Development  
+**Status:** Personal Development / Learning
